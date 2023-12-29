@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios, { AxiosError } from 'axios'
 
-type Book = {
+export type Book = {
   _id: string,
   title: string,
   description: string,
