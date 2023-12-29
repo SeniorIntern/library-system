@@ -1,21 +1,16 @@
 'use client'
-import { useEffect } from 'react'
-import axios from 'axios'
 
-type Book = {
-  _id: string,
-  title: string,
-  description: string,
-  image_url: string,
-}
+import useGames from "./hooks/useGames"
 
 const GameGrid = () => {
-  useEffect(() => {
-    axios.get<Book[]>('http://localhost:3001/api/books').then(data => console.log(data.data))
-  }, [])
+  const { books, isLoading, error } = useGames()
+  console.log('books', books);
 
   return (
-    <div>GameGrid</div>
+    <div>
+      {isLoading && <p>Loading...</p>}
+      {error && <p className="text-red-600 text-center">{error}</p>}
+    </div>
   )
 }
 
