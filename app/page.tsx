@@ -1,9 +1,9 @@
-import GameGrid from "./GameGrid";
+import BookGrid from "./BookGrid";
 
 export default function Home() {
   return (
     <main className="">
-      <GameGrid />
+      <BookGrid />
     </main>
   )
 }

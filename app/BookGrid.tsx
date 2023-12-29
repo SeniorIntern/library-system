@@ -2,7 +2,7 @@
 
 import useBooks from "./hooks/useBooks";
 
-const GameGrid = () => {
+const BookGrid = () => {
   const { books, isLoading, error } = useBooks()
   console.log('books', books);
 
@@ -14,4 +14,4 @@ const GameGrid = () => {
   )
 }
 
-export default GameGrid
+export default BookGrid

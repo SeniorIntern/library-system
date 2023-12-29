@@ -8,7 +8,7 @@ type Book = {
   image_url: string,
 }
 
-const useGames = () => {
+const useBooks = () => {
   const [books, setBooks] = useState<Book[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
@@ -33,4 +33,4 @@ const useGames = () => {
   return { books, isLoading, error }
 }
 
-export default useGames
+export default useBooks
