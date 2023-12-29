@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import apiClient from '../services/api-client'
 
 type Genre = {
   _id: string,
@@ -15,7 +16,7 @@ const useGenres = () => {
   useEffect(() => {
     const controller = new AbortController()
     setIsLoading(true)
-    axios.get<Genre[]>('http://localhost:3001/api/categories', { signal: controller.signal })
+    apiClient.get<Genre[]>('/categories', { signal: controller.signal })
       .then(data => {
         setGenres(data.data)
         setIsLoading(false)

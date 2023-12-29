@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios, { AxiosError } from 'axios'
+import apiClient from '../services/api-client'
 
 export type Book = {
   _id: string,
@@ -16,7 +17,7 @@ const useBooks = () => {
   useEffect(() => {
     const controller = new AbortController()
     setIsLoading(true)
-    axios.get<Book[]>('http://localhost:3001/api/books', { signal: controller.signal })
+    apiClient.get<Book[]>('/books', { signal: controller.signal })
       .then(data => {
         setBooks(data.data)
         setIsLoading(false)
