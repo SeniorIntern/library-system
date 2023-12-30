@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react'
-import axios, { AxiosError } from 'axios'
-import apiClient from '../services/api-client'
+import { apiClient, AxiosError } from '../services/api-client'
 
 export type Book = {
   _id: string,
   title: string,
   description: string,
   image_url: string,
+  language: {
+    _id: string,
+    language: string
+  },
+  authors: [{
+    _id: string,
+    name: string
+  }],
+  category: {
+    _id: string,
+    name: string,
+    description: string
+  }
 }
 
 const useBooks = () => {
