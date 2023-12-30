@@ -4,7 +4,6 @@ import useGenres from './hooks/useGenres'
 
 const GenreList = () => {
   const { genres, isLoading, error } = useGenres()
-  console.log('genres===', genres)
 
   return (
     <div className='ml-4'>

@@ -10,11 +10,15 @@ const BookGrid = () => {
     <>
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-600 text-center">{error}</p>}
-      <div className="flex flex-wrap gap-8">
+      <div className="flex flex-wrap gap-8 justify-center">
         {
           books.map(book => (
             <div key={book._id}>
-              <BookCard title={book.title} image_url={"https://covers.openlibrary.org/b/id/6633571-L.jpg"} />
+              <BookCard
+                _id={book._id}
+                title={book.title}
+                image_url={"https://covers.openlibrary.org/b/id/6633571-L.jpg"}
+              />
             </div>
           ))
         }

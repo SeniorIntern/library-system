@@ -1,12 +1,14 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 type Props = {
+  _id: string,
   title: string,
   image_url: string,
 }
 
-const BookCard = ({ title, image_url }: Props) => {
+const BookCard = ({ _id, title, image_url }: Props) => {
   return (
     <div className="rounded-xl bg-[#333] p-2 text-white">
       <Image
@@ -17,7 +19,9 @@ const BookCard = ({ title, image_url }: Props) => {
         className='w-[260px] h-[260px]'
       />
       <div className='my-4 font-bold text-[1.15rem]'>
-        <p>{title}</p>
+        <Link href={`/books/${_id}`}>
+          <p>{title}</p>
+        </Link>
       </div>
     </div>
   )

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-import apiClient from '../services/api-client'
+import { apiClient, AxiosError } from '../services/api-client'
 
 type Genre = {
   _id: string,
@@ -22,6 +21,7 @@ const useGenres = () => {
         setIsLoading(false)
       })
       .catch(err => {
+        if (err instanceof AxiosError) return
         setError(err.messgae)
         setIsLoading(false)
       })
