@@ -10,7 +10,7 @@ const BookGrid = () => {
     <>
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-600 text-center">{error}</p>}
-      <div className="flex flex-wrap gap-8 justify-center">
+      <div className="flex flex-wrap gap-8">
         {
           books.map(book => (
             <div key={book._id}>

@@ -2,6 +2,7 @@
 import { Select } from "@radix-ui/themes"
 
 const LanguageSelector = () => {
+
   const languages = [
     { _id: 1, language: 'English' },
     { _id: 2, language: 'Hindi' },
@@ -10,13 +11,18 @@ const LanguageSelector = () => {
   ]
 
   return (
-    <div>
+    <div className="mb-6">
       <Select.Root defaultValue="English" size="3">
         <Select.Trigger />
         <Select.Content>
           <Select.Group>
             {languages.map(language => (
-              <Select.Item key={language._id} value={language.language}>{language.language}</Select.Item>
+              <Select.Item
+                key={language._id}
+                value={language.language}
+              >
+                {language.language}
+              </Select.Item>
             ))}
           </Select.Group>
         </Select.Content>

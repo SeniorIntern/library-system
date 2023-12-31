@@ -1,7 +1,9 @@
 'use client'
 import { apiClient } from "@/app/services/api-client"
+import useUserStore from "@/app/store"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Grid } from "@radix-ui/themes"
+import { useRouter } from "next/navigation"
 import { CSSProperties } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -18,6 +20,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 const page = () => {
+  const { token } = useUserStore()
+  const router = useRouter()
+
   const inputStyle: CSSProperties = {
     border: "1px solid black",
     borderRadius: "0.4em",
@@ -34,6 +39,8 @@ const page = () => {
     const { title, description, image_url, thumbnail_url, authors, category, language } = data
     apiClient.post('/books', { title, description, image_url, thumbnail_url, authors, category, language })
   }
+
+  if (!token) return router.push('/login')
 
   return (
     <div className="flex justify-center">

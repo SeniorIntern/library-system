@@ -2,13 +2,15 @@
 
 import { PropsWithChildren, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import authService from './authService';
+import useUserStore from './app/store';
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
+  const { token } = useUserStore()
+
   const router = useRouter();
 
   useEffect(() => {
-    if (!authService.isAuthenticated()) {
+    if (token) {
       // Redirect to login page if not authenticated
       router.push('/login');
     }
