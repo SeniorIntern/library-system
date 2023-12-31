@@ -1,4 +1,7 @@
 'use client'
+
+import useCategories from "@/app/hooks/useCategories"
+import useLanguages from "@/app/hooks/useLanguages"
 import { apiClient } from "@/app/services/api-client"
 import useUserStore from "@/app/store"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -7,6 +10,7 @@ import { useRouter } from "next/navigation"
 import { CSSProperties } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
+import React from 'react';
 
 const schema = z.object({
   title: z.string().min(3, { message: 'Title can not be less than 3 characters' }).max(40),
@@ -23,10 +27,17 @@ const page = () => {
   const { token } = useUserStore()
   const router = useRouter()
 
+  const { categories, isLoading: isCategoryLoading, error: categoryErr } = useCategories()
+  if (categoryErr) return null
+
+  const { languages, isLoading: isLanguageLoading, error: languageErr } = useLanguages()
+  if (languageErr) return null
+
   const inputStyle: CSSProperties = {
     border: "1px solid black",
     borderRadius: "0.4em",
     padding: "0.3em 0.6em",
+    width: "30vw"
   }
 
   const errorStyle: CSSProperties = {
@@ -36,8 +47,13 @@ const page = () => {
 
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
   const onSubmit = (data: FieldValues) => {
+    console.log('data=', data);
+
     const { title, description, image_url, thumbnail_url, authors, category, language } = data
     apiClient.post('/books', { title, description, image_url, thumbnail_url, authors, category, language })
+      .then(() => {
+        router.push(`/`)
+      }).catch((err) => console.log(err))
   }
 
   if (!token) return router.push('/login')
@@ -59,6 +75,7 @@ const page = () => {
         </Grid>
         <Grid>
           <textarea
+            rows={8}
             {...register('description', { required: true })}
             id="description"
             placeholder="Short Description"
@@ -85,21 +102,39 @@ const page = () => {
           {errors.thumbnail_url && <span style={errorStyle}>{errors.thumbnail_url.message}</span>}
         </Grid>
         <Grid>
-          <input
-            {...register('category')}
-            id="category"
-            placeholder="Category"
+          <select
+            {...register("category")}
+            aria-placeholder="Book Category"
             style={inputStyle}
-          />
+          >
+            <option value="">Select a category</option>
+            {categories.map(category => (
+              <option
+                key={category._id}
+                value={category._id}
+              >
+                {category.name}
+              </option>
+            ))}
+          </select>
           {errors.category && <span style={errorStyle}>{errors.category.message}</span>}
         </Grid>
         <Grid>
-          <input
-            {...register('language')}
-            id="language"
-            placeholder="Language"
+          <select
+            {...register("language")}
+            aria-placeholder="Book language"
             style={inputStyle}
-          />
+          >
+            <option value="">Select a language</option>
+            {languages.map(language => (
+              <option
+                key={language._id}
+                value={language._id}
+              >
+                {language.language}
+              </option>
+            ))}
+          </select>
           {errors.language && <span style={errorStyle}>{errors.language.message}</span>}
         </Grid>
         <Button type="submit">Submit</Button>
