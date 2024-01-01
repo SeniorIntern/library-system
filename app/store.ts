@@ -5,12 +5,20 @@ type UserStore = {
   setToken: (newToken: string) => void;
 };
 
+/*
 const useUserStore = create<UserStore>((set) => ({
   token: localStorage.getItem('token') || '', // Initialize with the token from localStorage
   setToken: (newToken: string) => {
     set({ token: newToken });
     localStorage.setItem('token', newToken); // Save the token to localStorage
-  },
+  }
+}));
+*/
+const useUserStore = create<UserStore>((set) => ({
+  token: '', // Initialize with the token from localStorage
+  setToken: (newToken: string) => {
+    set({ token: newToken });
+  }
 }));
 
 export default useUserStore;

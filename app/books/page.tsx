@@ -3,12 +3,12 @@
 import { Text } from '@radix-ui/themes'
 import React from 'react'
 import useUserStore from '../store'
-import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
 function page() {
   const { token } = useUserStore()
-  const router = useRouter()
+  if (!token) return redirect('/login')
 
   const bookLinks = [
     { id: 1, label: "New Book", href: "/books/new" },
@@ -16,8 +16,6 @@ function page() {
     { id: 3, label: "Delete", href: "/books/delete" },
     { id: 4, label: "Rent Book", href: "/books/rent" },
   ]
-
-  if (!token) return router.push('/login')
 
   return (
     <div className='flex min-h-[70vh] w-full justify-center items-center'>

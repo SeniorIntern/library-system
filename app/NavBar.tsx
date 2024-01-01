@@ -14,12 +14,22 @@ const NavBar = () => {
         <Link href={'/'}>
           <Text>Home</Text>
         </Link>
-
         {
           token &&
-          <Link href={'/books/new'}>
-            <Text>New Book</Text>
-          </Link>
+          <>
+            <Link href={'/books'}>
+              <Text>Manage Books</Text>
+            </Link>
+            <Link href={'/rentals'}>
+              <Text>Rentals</Text>
+            </Link>
+            <Link href={'/returns'}>
+              <Text>Returns</Text>
+            </Link>
+            <Link href={'/register'}>
+              <Text>Register</Text>
+            </Link>
+          </>
         }
       </div>
       <Text as="label" size="2">
@@ -30,7 +40,7 @@ const NavBar = () => {
               ?
               <Text size='2' onClick={() => {
                 setToken("")
-                router.push('/')
+                router.refresh()
               }}>Log Out</Text>
               :
               <Link href='/login'>

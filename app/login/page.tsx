@@ -2,7 +2,7 @@
 import { AxiosError, apiClient } from "@/app/services/api-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Grid } from "@radix-ui/themes"
-import { useRouter } from "next/navigation"
+import { redirect } from "next/navigation"
 import { CSSProperties } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -16,12 +16,10 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 const page = () => {
-  const { token } = useUserStore()
-
-  const router = useRouter()
+  const { token, setToken } = useUserStore()
+  if (token) return redirect('/')
 
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
-  const { setToken } = useUserStore();
 
   const onSubmit = async (data: FieldValues) => {
     apiClient.post('/auth', {
@@ -29,7 +27,7 @@ const page = () => {
       password: data.password
     }).then(data => {
       setToken(data.data)
-      router.push('/');
+      redirect('/')
     }).catch((err: AxiosError) => console.log(err.response?.data))
   }
 
@@ -37,14 +35,13 @@ const page = () => {
     border: "1px solid black",
     borderRadius: "0.4em",
     padding: "0.3em 0.6em",
+    width: "30vw"
   }
 
   const errorStyle: CSSProperties = {
     color: "red",
     fontSize: "0.8rem"
   }
-
-  if (token) return router.push('/')
 
   return (
     <div className="flex h-[70vh] w-full justify-center items-center">
@@ -71,7 +68,7 @@ const page = () => {
           />
           {errors.password && <span style={errorStyle}>{errors.password.message}</span>}
         </Grid>
-        <Button type="submit" className="cursor-pointer" >Submit</Button>
+        <Button type="submit">Submit</Button>
       </form>
     </div>
   )

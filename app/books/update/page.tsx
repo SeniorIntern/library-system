@@ -6,7 +6,7 @@ import { apiClient } from "@/app/services/api-client"
 import useUserStore from "@/app/store"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Grid } from "@radix-ui/themes"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { CSSProperties, useState } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -25,9 +25,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 const page = () => {
-  const router = useRouter()
   const { token } = useUserStore()
-  if (!token) return router.push('/login')
+  if (!token) return redirect('/login')
 
   const { books } = useBooks()
   const { categories } = useCategories()
@@ -53,7 +52,7 @@ const page = () => {
     const { title, description, image_url, thumbnail_url, authors, category, language } = data
     apiClient.patch('/books/' + bookId, { title, description, image_url, thumbnail_url, authors, category, language })
       .then(() => {
-        router.push(`/`)
+        redirect(`/`)
       }).catch((err) => console.log(err))
   }
 

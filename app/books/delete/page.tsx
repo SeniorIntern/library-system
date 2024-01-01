@@ -4,7 +4,7 @@ import useBooks, { Book } from '@/app/hooks/useBooks'
 import { apiClient } from '@/app/services/api-client'
 import useUserStore from '@/app/store'
 import { Button } from '@radix-ui/themes'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { CSSProperties, useState } from 'react'
 
 export default function page() {
@@ -17,7 +17,7 @@ export default function page() {
 
   const router = useRouter()
   const { token } = useUserStore()
-  if (!token) return router.push('/login')
+  if (!token) return redirect('/login')
 
   const { books } = useBooks()
   const [bookId, setBookId] = useState<string>()
