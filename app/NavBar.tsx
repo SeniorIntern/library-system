@@ -1,56 +1,58 @@
 'use client'
-import { Flex, Switch, Text } from '@radix-ui/themes'
+import { Button, Flex, Switch, Text } from '@radix-ui/themes'
 import Link from 'next/link'
 import useUserStore from './store'
-import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
+import HydrationZustand from './HydrationZustand'
 
 const NavBar = () => {
-  const router = useRouter()
   const { token, setToken } = useUserStore()
 
   return (
-    <nav className='flex justify-between border-b border-black px-5 py-3 mb-10'>
-      <div className='space-x-6'>
-        <Link href={'/'}>
-          <Text>Home</Text>
-        </Link>
-        {
-          token &&
-          <>
-            <Link href={'/books'}>
-              <Text>Manage Books</Text>
-            </Link>
-            <Link href={'/rentals'}>
-              <Text>Rentals</Text>
-            </Link>
-            <Link href={'/returns'}>
-              <Text>Returns</Text>
-            </Link>
-            <Link href={'/register'}>
-              <Text>Register</Text>
-            </Link>
-          </>
-        }
-      </div>
-      <Text as="label" size="2">
-        <Flex className='flex space-x-6'>
-          <Switch defaultChecked mr='1' />Dark Mode
-          <div>
-            {token
-              ?
-              <Text size='2' onClick={() => {
-                setToken("")
-                router.refresh()
-              }}>Log Out</Text>
-              :
-              <Link href='/login'>
-                <Text size='2'>Log In</Text>
+    <HydrationZustand>
+      <nav className='flex justify-between border-b border-black px-5 py-3 mb-10'>
+        <div className='flex space-x-6 items-center'>
+          <Link href={'/'}>
+            <Text>Home</Text>
+          </Link>
+          {
+            token &&
+            <>
+              <Link href={'/books'}>
+                <Text>Manage Books</Text>
               </Link>
-            }
-          </div>
-        </Flex>
-      </Text>
-    </nav>
+              <Link href={'/rentals'}>
+                <Text>Rentals</Text>
+              </Link>
+              <Link href={'/returns'}>
+                <Text>Returns</Text>
+              </Link>
+              <Link href={'/register'}>
+                <Text>Register</Text>
+              </Link>
+            </>
+          }
+        </div>
+        <Text as="label" size="2">
+          <Flex className='flex space-x-6 items-center'>
+            <Switch defaultChecked mr='1' />Dark Mode
+            <div>
+              {token
+                ?
+                <Button onClick={() => {
+                  setToken("")
+                  redirect('/')
+                }}>Log Out</Button>
+                :
+                <Link href='/login'>
+                  <Button>Log In</Button>
+                </Link>
+              }
+            </div>
+          </Flex>
+        </Text>
+      </nav>
+    </HydrationZustand>
   )
 }
 
