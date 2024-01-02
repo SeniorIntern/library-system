@@ -3,6 +3,7 @@ import { Grid } from "@radix-ui/themes";
 import BookGrid from "./BookGrid";
 import GenreList from "./GenreList";
 import LanguageSelector from "./LanguageSelector";
+import HydrationZustand from "./HydrationZustand";
 
 export type Props = {
   searchParams: {
@@ -13,12 +14,14 @@ export type Props = {
 
 export default function Home({ searchParams }: Props) {
   return (
-    <main className="flex justify-between">
-      <GenreList searchParams={searchParams} />
-      <Grid>
-        <LanguageSelector />
-        <BookGrid />
-      </Grid>
-    </main>
+    <HydrationZustand>
+      <main className="flex justify-between">
+        <GenreList searchParams={searchParams} />
+        <Grid>
+          <LanguageSelector />
+          <BookGrid />
+        </Grid>
+      </main>
+    </HydrationZustand>
   )
 }
