@@ -13,7 +13,8 @@ export type Rental = {
   _id: string,
   customer: Customer,
   book: Book,
-  dateOut: Date
+  dateOut: Date,
+  hasReturned: boolean
 }
 
 const useRentals = () => {
