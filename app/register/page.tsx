@@ -1,5 +1,5 @@
 'use client'
-import { AxiosError, apiClient } from "@/app/services/api-client"
+import { apiClient } from "@/app/services/api-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Grid, Text } from "@radix-ui/themes"
 import { redirect } from "next/navigation"
@@ -7,49 +7,44 @@ import { CSSProperties, useEffect, useState } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import useUserStore from "../store"
-import { CanceledError } from "axios"
 
 const schema = z.object({
   name: z.string().min(3, { message: 'Name is required' }),
-  email: z.string().min(3, { message: 'Email is required' }).max(40),
+  email: z.string().email().min(3, { message: 'Email is required' }).max(40),
   password: z.string().min(1, { message: 'Password is required' }).max(255),
 })
 
 type FormData = z.infer<typeof schema>
 
 const page = () => {
-  const [isAdmin, setIsAdmin] = useState<Boolean>()
-  const [loading, setLoading] = useState<boolean>(false)
-
-  const { token } = useUserStore()
-  if (!token) return redirect('/')
+  const [isAdmin, setIsAdmin] = useState<boolean>(true)
+  const { token } = useUserStore();
 
   useEffect(() => {
-    setLoading(true)
-    const controller = new AbortController()
+    if (!token) return redirect('/')
+  }, [token])
+
+  const { handleSubmit, register, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
+
+  const onSubmit = async (data: FieldValues) => {
     apiClient.post('/users/isAdmin', {},
       {
         headers: {
           'x-auth-token': token
-        },
-        signal: controller.signal
+        }
       })
-      .then(data => {
-        setIsAdmin(data.data.status)
-        setLoading(false)
-      })
-      .catch(err => {
-        if (err instanceof CanceledError) return
-        console.log(err.message);
-        setLoading(false)
-      })
-    return () => controller.abort()
-  }, [])
+      .then(res => !res.data.status ?
+        setIsAdmin(false)
+        :
+        apiClient.post('/users', {
+          name: data.name,
+          email: data.email,
+          password: data.password
+        }).then(() => {
+        })
+      ).catch((err) => console.log(err.response?.data))
 
-  const { handleSubmit, register, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
-  const { setToken } = useUserStore();
-
-  const onSubmit = async (data: FieldValues) => {
+    /*
     apiClient.post('/users', {
       name: data.name,
       email: data.email,
@@ -58,6 +53,7 @@ const page = () => {
       setToken(data.data)
       redirect('/')
     }).catch((err: AxiosError) => console.log(err.response?.data))
+    */
   }
 
   const inputStyle: CSSProperties = {
@@ -72,15 +68,13 @@ const page = () => {
     fontSize: "0.8rem"
   }
 
-  if (loading) return <Text>Loading...</Text>
-  if (!isAdmin) return <Text color="red">Permission Denied. Staff is not allowed to register staff</Text>
-
   return (
     <div className="flex h-[70vh] w-full justify-center items-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4 border-[1px] border-black rounded-md items-center w-[40vw] py-8"
       >
+        {!isAdmin && <Text color="red" size='4'>Staff is not allowed to register staff</Text>}
         <Grid>
           <input
             {...register('name', { required: true })}
