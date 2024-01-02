@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { apiClient } from "../services/api-client"
 import { CanceledError } from "axios"
+import { Rental } from "./useRentals"
 
 type Return = {
   _id: string,
-  rental: Return
+  rental: Rental
   dateReturned: Date
 }
 
