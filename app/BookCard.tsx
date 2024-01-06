@@ -10,7 +10,7 @@ type Props = {
 
 const BookCard = ({ _id, title, image_url }: Props) => {
   return (
-    <div className="rounded-xl bg-[#333] p-2 text-white">
+    <div className="rounded-xl bg-[#333] p-2 text-white w-[260px]">
       <Image
         src={image_url}
         alt={""}

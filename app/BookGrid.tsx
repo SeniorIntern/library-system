@@ -5,12 +5,14 @@ import BookCard from "./BookCard";
 
 const BookGrid = () => {
   const { books, isLoading, error } = useBooks()
+  console.log('books=', books);
+
 
   return (
     <>
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-600 text-center">{error}</p>}
-      <div className="flex flex-wrap gap-8">
+      <div className="flex flex-wrap gap-8 justify-center">
         {
           books.map(book => (
             <div key={book._id}>
