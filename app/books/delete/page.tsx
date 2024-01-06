@@ -4,8 +4,9 @@ import useBooks, { Book } from '@/app/hooks/useBooks'
 import { apiClient } from '@/app/services/api-client'
 import useUserStore from '@/app/store'
 import { Button } from '@radix-ui/themes'
-import { redirect, useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { CSSProperties, useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function page() {
   const inputStyle: CSSProperties = {
@@ -15,7 +16,6 @@ export default function page() {
     width: "30vw"
   }
 
-  const router = useRouter()
   const { token } = useUserStore()
   if (!token) return redirect('/login')
 
@@ -23,35 +23,37 @@ export default function page() {
   const [bookId, setBookId] = useState<string>()
 
   const deleteBookById = async () => apiClient.delete<Book>('/books/' + bookId)
-    .then(res => {
-      console.log(res.data);
-      router.push('/')
+    .then(() => {
+      toast.success('Book deleted sucessfully!')
     })
-    .catch(err => console.log(err))
+    .catch(err => toast.error(err.message))
 
   return (
-    <section className='flex w-full justify-center'>
-      <div className='space-x-4'>
-        <select
-          aria-placeholder="Book title"
-          style={inputStyle}
-          onChange={(e) => {
-            setBookId(e.target.value)
-          }}
-        >
-          <option value="">Select a Book</option>
-          {books.map(book => (
-            <option
-              key={book._id}
-              value={book._id}
-            >
-              {book.title}
-            </option>
-          ))}
-        </select>
+    <>
+      <Toaster />
+      <section className='flex w-full justify-center'>
+        <div className='space-x-4'>
+          <select
+            aria-placeholder="Book title"
+            style={inputStyle}
+            onChange={(e) => {
+              setBookId(e.target.value)
+            }}
+          >
+            <option value="">Select a Book</option>
+            {books.map(book => (
+              <option
+                key={book._id}
+                value={book._id}
+              >
+                {book.title}
+              </option>
+            ))}
+          </select>
 
-        {bookId && <Button onClick={deleteBookById}>DELETE</Button>}
-      </div>
-    </section>
+          {bookId && <Button onClick={deleteBookById}>DELETE</Button>}
+        </div>
+      </section>
+    </>
   )
 }
