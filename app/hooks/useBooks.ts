@@ -10,10 +10,7 @@ export type Book = {
     _id: string,
     language: string
   },
-  authors: [{
-    _id: string,
-    name: string
-  }],
+  author: string,
   category: {
     _id: string,
     name: string,
