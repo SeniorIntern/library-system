@@ -14,7 +14,7 @@ const BookGrid = ({ selectedGenre }: { selectedGenre: string | null }) => {
     <>
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-600 text-center">{error}</p>}
-      <div className="flex flex-wrap gap-8">
+      <div className="flex flex-wrap gap-8 w-full">
         {
           filteredBooks.map(book => (
             <div key={book._id}>

@@ -15,7 +15,7 @@ const GenreList = ({ onSelectGenre, selectedGenre }: Props) => {
     <div className='ml-4'>
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-600 text-center">{error}</p>}
-      <Flex direction="column" className='gap-4 mr-8'>
+      <Flex direction="column" className='gap-4 mr-10'>
         {genres.map(genre => (
           <button
             className={`text-left ${selectedGenre === genre._id && `font-bold`}`}
