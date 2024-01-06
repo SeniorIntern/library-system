@@ -25,7 +25,7 @@ const BookDetail = ({ params }: Props) => {
 
             <div className="mt-4">
               <ul>
-                <li>Author(s): {book.authors?.map(a => a.name).join(', ')}</li>
+                <li>Author(s): {book.author}</li>
                 <li>Category: {book.category?.name}</li>
                 <li>Language: {book.language?.language}</li>
               </ul>
