@@ -5,8 +5,6 @@ import BookCard from "./BookCard";
 
 const BookGrid = () => {
   const { books, isLoading, error } = useBooks()
-  console.log('books=', books);
-
 
   return (
     <>

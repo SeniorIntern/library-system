@@ -1,22 +1,16 @@
 'use client'
+
 import { Grid } from "@radix-ui/themes";
 import BookGrid from "./BookGrid";
 import GenreList from "./GenreList";
 import LanguageSelector from "./LanguageSelector";
 import HydrationZustand from "./HydrationZustand";
 
-export type Props = {
-  searchParams: {
-    language?: string,
-    genre?: string
-  }
-}
-
-export default function Home({ searchParams }: Props) {
+export default function Home() {
   return (
     <HydrationZustand>
       <main className="flex justify-between">
-        <GenreList searchParams={searchParams} />
+        <GenreList />
         <Grid>
           <LanguageSelector />
           <BookGrid />
