@@ -21,15 +21,26 @@ export type Book = {
   }
 }
 
+
+type UnpopulatedBook = {
+  _id: string,
+  title: string,
+  description: string,
+  image_url: string,
+  language: string,
+  authors: [string],
+  category: string
+}
+
 const useBooks = () => {
-  const [books, setBooks] = useState<Book[]>([])
+  const [books, setBooks] = useState<UnpopulatedBook[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
 
   useEffect(() => {
     const controller = new AbortController()
     setIsLoading(true)
-    apiClient.get<Book[]>('/books', { signal: controller.signal })
+    apiClient.get<UnpopulatedBook[]>('/books', { signal: controller.signal })
       .then(data => {
         setBooks(data.data)
         setIsLoading(false)
