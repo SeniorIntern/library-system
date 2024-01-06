@@ -7,6 +7,7 @@ import { CSSProperties } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import useUserStore from "../store"
+import toast, { Toaster } from "react-hot-toast"
 
 const schema = z.object({
   email: z.string().min(3, { message: 'Email cannot be empty' }).max(40),
@@ -28,7 +29,7 @@ const page = () => {
     }).then(data => {
       setToken(data.data)
       redirect('/')
-    }).catch((err: AxiosError) => console.log(err.response?.data))
+    }).catch((err) => toast.error(err.response?.data))
   }
 
   const inputStyle: CSSProperties = {
@@ -44,33 +45,36 @@ const page = () => {
   }
 
   return (
-    <div className="flex h-[70vh] w-full justify-center items-center">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 border-[1px] border-black rounded-md items-center w-[40vw] py-8"
-      >
-        <Grid>
-          <input
-            {...register('email', { required: true })}
-            id="email"
-            placeholder="email"
-            style={inputStyle}
-          />
-          {errors.email && <span style={errorStyle}>{errors.email.message}</span>}
-        </Grid>
-        <Grid>
-          <input
-            {...register('password', { required: true })}
-            id="password"
-            type="password"
-            placeholder="Password"
-            style={inputStyle}
-          />
-          {errors.password && <span style={errorStyle}>{errors.password.message}</span>}
-        </Grid>
-        <Button type="submit">Submit</Button>
-      </form>
-    </div>
+    <>
+      <Toaster />
+      <div className="flex h-[70vh] w-full justify-center items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-4 border-[1px] border-black rounded-md items-center w-[40vw] py-8"
+        >
+          <Grid>
+            <input
+              {...register('email', { required: true })}
+              id="email"
+              placeholder="email"
+              style={inputStyle}
+            />
+            {errors.email && <span style={errorStyle}>{errors.email.message}</span>}
+          </Grid>
+          <Grid>
+            <input
+              {...register('password', { required: true })}
+              id="password"
+              type="password"
+              placeholder="Password"
+              style={inputStyle}
+            />
+            {errors.password && <span style={errorStyle}>{errors.password.message}</span>}
+          </Grid>
+          <Button type="submit">Submit</Button>
+        </form>
+      </div>
+    </>
   )
 }
 
