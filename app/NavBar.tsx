@@ -36,7 +36,6 @@ const NavBar = () => {
         </div>
         <Text as="label" size="2">
           <Flex className='flex space-x-6 items-center'>
-            <Switch defaultChecked mr='1' />Dark Mode
             <div>
               {token
                 ?

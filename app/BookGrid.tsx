@@ -2,6 +2,7 @@
 
 import useBooks from "./hooks/useBooks";
 import BookCard from "./BookCard";
+import { Text } from "@radix-ui/themes";
 
 const BookGrid = ({ selectedGenre }: { selectedGenre: string | null }) => {
   const { books, isLoading, error } = useBooks()
@@ -14,6 +15,7 @@ const BookGrid = ({ selectedGenre }: { selectedGenre: string | null }) => {
     <>
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-600 text-center">{error}</p>}
+      {filteredBooks.length === 0 && <Text size='6' className="w-full">0 Books Found!</Text>}
       <div className="flex flex-wrap gap-8 w-full">
         {
           filteredBooks.map(book => (
