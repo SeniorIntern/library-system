@@ -3,14 +3,13 @@
 import useCategories from "@/app/hooks/useCategories"
 import useLanguages from "@/app/hooks/useLanguages"
 import { apiClient } from "@/app/services/api-client"
-import useUserStore from "@/app/store"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Grid } from "@radix-ui/themes"
-import { redirect } from "next/navigation"
 import { CSSProperties } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import toast, { Toaster } from 'react-hot-toast'
+import useAuth from "@/app/hooks/useAuth"
 
 const schema = z.object({
   title: z.string().min(3, { message: 'Title can not be less than 3 characters' }).max(40),
@@ -25,7 +24,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 const page = () => {
-  const { token } = useUserStore()
+  useAuth()
 
   const { categories, isLoading: isCategoryLoading, error: categoryErr } = useCategories()
   if (categoryErr) return null
@@ -55,8 +54,6 @@ const page = () => {
         toast.success('New book added sucessfully!')
       }).catch((err) => toast.error(err?.message))
   }
-
-  if (!token) return redirect('/login')
 
   return (
     <>

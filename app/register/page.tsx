@@ -2,11 +2,10 @@
 import { apiClient } from "@/app/services/api-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Grid, Text } from "@radix-ui/themes"
-import { redirect } from "next/navigation"
-import { CSSProperties, useEffect, useState } from "react"
+import { CSSProperties, useState } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import useUserStore from "../store"
+import useAuth from "../hooks/useAuth"
 
 const schema = z.object({
   name: z.string().min(3, { message: 'Name is required' }),
@@ -18,12 +17,7 @@ type FormData = z.infer<typeof schema>
 
 const page = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(true)
-  const { token } = useUserStore();
-
-  useEffect(() => {
-    if (!token) return redirect('/')
-  }, [token])
-
+  const { token } = useAuth()
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
 
   const onSubmit = async (data: FieldValues) => {
@@ -43,17 +37,6 @@ const page = () => {
         }).then(() => {
         })
       ).catch((err) => console.log(err.response?.data))
-
-    /*
-    apiClient.post('/users', {
-      name: data.name,
-      email: data.email,
-      password: data.password
-    }).then(data => {
-      setToken(data.data)
-      redirect('/')
-    }).catch((err: AxiosError) => console.log(err.response?.data))
-    */
   }
 
   const inputStyle: CSSProperties = {

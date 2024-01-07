@@ -2,16 +2,17 @@
 
 import useBooks, { Book } from '@/app/hooks/useBooks'
 import { apiClient } from '@/app/services/api-client'
-import useUserStore from '@/app/store'
 import { Button, Flex, Grid } from '@radix-ui/themes'
-import { redirect } from 'next/navigation'
 import { CSSProperties, useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import toast, { Toaster } from 'react-hot-toast'
+import useAuth from '@/app/hooks/useAuth'
 
 export default function page() {
+  useAuth()
+
   const inputStyle: CSSProperties = {
     border: "1px solid black",
     borderRadius: "0.4em",
@@ -23,9 +24,6 @@ export default function page() {
     color: "red",
     fontSize: "0.8rem"
   }
-
-  const { token } = useUserStore()
-  if (!token) return redirect('/login')
 
   const [book, setBook] = useState<Book>()
   const { books } = useBooks()

@@ -3,9 +3,11 @@
 import { Button, Flex, Table, Text } from "@radix-ui/themes";
 import useRentals from "../hooks/useRentals";
 import { apiClient } from "../services/api-client";
+import useAuth from "../hooks/useAuth";
 
 export default function page() {
   const { rentals, setRentals, error, isLoading } = useRentals()
+  useAuth()
 
   const handleReturn = async (rentalId: string) => {
     const originalRentals = [...rentals || []]

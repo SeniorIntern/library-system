@@ -1,9 +1,10 @@
 'use client'
-import { AxiosError, apiClient } from "@/app/services/api-client"
+
+import { apiClient } from "@/app/services/api-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Grid } from "@radix-ui/themes"
 import { redirect } from "next/navigation"
-import { CSSProperties } from "react"
+import { CSSProperties, useEffect } from "react"
 import { FieldValues, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import useUserStore from "../store"
@@ -18,7 +19,10 @@ type FormData = z.infer<typeof schema>
 
 const page = () => {
   const { token, setToken } = useUserStore()
-  if (token) return redirect('/')
+
+  useEffect(() => {
+    if (token) return redirect('/')
+  }, [token])
 
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
 

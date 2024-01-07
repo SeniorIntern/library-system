@@ -1,23 +1,21 @@
 'use client'
 
+import useAuth from '@/app/hooks/useAuth'
 import useBooks, { Book } from '@/app/hooks/useBooks'
 import { apiClient } from '@/app/services/api-client'
-import useUserStore from '@/app/store'
 import { Button } from '@radix-ui/themes'
-import { redirect } from 'next/navigation'
 import { CSSProperties, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function page() {
+  useAuth()
+
   const inputStyle: CSSProperties = {
     border: "1px solid black",
     borderRadius: "0.4em",
     padding: "0.3em 0.6em",
     width: "30vw"
   }
-
-  const { token } = useUserStore()
-  if (!token) return redirect('/login')
 
   const { books } = useBooks()
   const [bookId, setBookId] = useState<string>()

@@ -3,6 +3,7 @@
 import useBook from "@/app/hooks/useBook"
 import { Flex } from "@radix-ui/themes"
 import Image from "next/image"
+import { notFound } from "next/navigation"
 
 type Props = {
   params: {
@@ -12,11 +13,11 @@ type Props = {
 
 const BookDetail = ({ params }: Props) => {
   const { book, error, isLoading } = useBook(params.id)
+  { error && notFound() }
 
   return (
     <>
       {isLoading && <p>Loading...</p>}
-      {error && <p className="text-red-600 text-center">{error}</p>}
       <div>
         <Flex>
           <div className="w-1/2 m-4">

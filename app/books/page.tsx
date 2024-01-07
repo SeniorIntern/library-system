@@ -1,16 +1,11 @@
 'use client'
 
 import { Text } from '@radix-ui/themes'
-import React, { useEffect } from 'react'
-import useUserStore from '../store'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import useAuth from '../hooks/useAuth'
 
 function page() {
-  const { token } = useUserStore()
-  useEffect(() => {
-    if (!token) return redirect('/')
-  }, [token])
+  useAuth()
 
   const bookLinks = [
     { id: 1, label: "New Book", href: "/books/new" },

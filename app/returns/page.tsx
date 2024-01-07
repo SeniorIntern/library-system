@@ -2,10 +2,11 @@
 
 import { Flex, Table, Text } from "@radix-ui/themes"
 import useReturns from "../hooks/useReturns"
+import useAuth from "../hooks/useAuth"
 
 export default function page() {
+  useAuth()
   const { returns, error, isLoading } = useReturns()
-  console.log(returns);
 
   if (isLoading) return <Text>loading...</Text>
   if (error) return <Text>{error}</Text>
