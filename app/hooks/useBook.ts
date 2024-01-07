@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Book } from "./useBooks"
-import { apiClient, AxiosError } from '../services/api-client'
+import { apiClient } from '../services/api-client'
+import { CanceledError } from "axios"
 
 const useBook = (id: string) => {
   const [book, setBook] = useState<Book>({} as Book)
@@ -14,7 +15,7 @@ const useBook = (id: string) => {
       setBook(data.data)
       setIsLoading(false)
     }).catch(err => {
-      if (err instanceof AxiosError) return
+      if (err instanceof CanceledError) return
       setError(err.message)
       setIsLoading(false)
     })

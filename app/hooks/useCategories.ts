@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { apiClient, AxiosError } from '../services/api-client'
+import { apiClient, CanceledError } from '../services/api-client'
 
 export type Category = {
   _id: string,
@@ -21,7 +21,7 @@ const useCategories = () => {
         setIsLoading(false)
       })
       .catch(err => {
-        if (err instanceof AxiosError) return
+        if (err instanceof CanceledError) return
         setError(err.message)
         setIsLoading(false)
       })
