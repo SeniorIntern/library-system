@@ -24,7 +24,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 const page = () => {
-  useAuth()
+  const { isLoading } = useAuth()
 
   const { books } = useBooks()
   const { categories } = useCategories()
@@ -53,7 +53,6 @@ const page = () => {
       }).catch((err) => toast.error(err.message))
   }
 
-
   const findBookById = async (id: string) => apiClient.get<Book>('/books/' + id).then(res => {
     const { title, description, image_url, language, category } = res.data
     setValue('title', title)
@@ -64,6 +63,9 @@ const page = () => {
     setValue('language', language._id)
   })
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <>
       <Toaster />

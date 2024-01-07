@@ -8,7 +8,7 @@ import { CSSProperties, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function page() {
-  useAuth()
+  const { isLoading } = useAuth()
 
   const inputStyle: CSSProperties = {
     border: "1px solid black",
@@ -25,6 +25,10 @@ export default function page() {
       toast.success('Book deleted sucessfully!')
     })
     .catch(err => toast.error(err.message))
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>

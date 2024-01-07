@@ -11,7 +11,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import useAuth from '@/app/hooks/useAuth'
 
 export default function page() {
-  useAuth()
+  const { isLoading } = useAuth()
 
   const inputStyle: CSSProperties = {
     border: "1px solid black",
@@ -46,6 +46,10 @@ export default function page() {
       .then(() => {
         toast.success('Book rented sucessfully!')
       }).catch((err) => toast.error(err?.message))
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
   }
 
   return (

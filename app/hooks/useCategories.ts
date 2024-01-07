@@ -8,7 +8,7 @@ export type Category = {
 }
 
 const useCategories = () => {
-  const [categories, setBooks] = useState<Category[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
 
@@ -17,7 +17,7 @@ const useCategories = () => {
     setIsLoading(true)
     apiClient.get<Category[]>('/categories', { signal: controller.signal })
       .then(data => {
-        setBooks(data.data)
+        setCategories(data.data)
         setIsLoading(false)
       })
       .catch(err => {

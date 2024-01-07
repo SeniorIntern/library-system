@@ -5,12 +5,17 @@ import useReturns from "../hooks/useReturns"
 import useAuth from "../hooks/useAuth"
 
 export default function page() {
-  useAuth()
-  const { returns, error, isLoading } = useReturns()
+  const { isLoading } = useAuth()
 
-  if (isLoading) return <Text>loading...</Text>
+  const { returns, error, isLoading: rentalLoading } = useReturns()
+
+  if (rentalLoading) return <Text>loading...</Text>
   if (error) return <Text>{error}</Text>
   if (!returns?.length) return <Text>No Returns</Text>
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>

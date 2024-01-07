@@ -16,8 +16,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 const page = () => {
+  const { isLoading, token } = useAuth()
+
   const [isAdmin, setIsAdmin] = useState<boolean>(true)
-  const { token } = useAuth()
   const { handleSubmit, register, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema) })
 
   const onSubmit = async (data: FieldValues) => {
@@ -49,6 +50,10 @@ const page = () => {
   const errorStyle: CSSProperties = {
     color: "red",
     fontSize: "0.8rem"
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
   }
 
   return (

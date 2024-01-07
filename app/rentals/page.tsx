@@ -6,8 +6,9 @@ import { apiClient } from "../services/api-client";
 import useAuth from "../hooks/useAuth";
 
 export default function page() {
-  const { rentals, setRentals, error, isLoading } = useRentals()
-  useAuth()
+  const { isLoading } = useAuth()
+
+  const { rentals, setRentals, error, isLoading: rentalLoading } = useRentals()
 
   const handleReturn = async (rentalId: string) => {
     const originalRentals = [...rentals || []]
@@ -25,9 +26,13 @@ export default function page() {
 
   }
 
-  if (isLoading) return <Text>loading...</Text>
+  if (rentalLoading) return <Text>loading...</Text>
   if (error) return <Text color="red">{error}</Text>
   if (!rentals?.length) return <Text>No Rentals</Text>
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>

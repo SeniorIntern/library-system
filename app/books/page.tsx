@@ -5,7 +5,7 @@ import Link from 'next/link'
 import useAuth from '../hooks/useAuth'
 
 function page() {
-  useAuth()
+  const { isLoading } = useAuth()
 
   const bookLinks = [
     { id: 1, label: "New Book", href: "/books/new" },
@@ -14,6 +14,9 @@ function page() {
     { id: 4, label: "Rent Book", href: "/books/rent" },
   ]
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className='flex min-h-[70vh] w-full justify-center items-center'>
       <section className="grid grid-cols-2 gap-6 p-4 md:p-6">

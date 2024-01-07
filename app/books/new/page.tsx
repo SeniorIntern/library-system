@@ -24,13 +24,14 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 const page = () => {
-  useAuth()
+  const { isLoading } = useAuth()
 
   const { categories, isLoading: isCategoryLoading, error: categoryErr } = useCategories()
   if (categoryErr) return null
 
   const { languages, isLoading: isLanguageLoading, error: languageErr } = useLanguages()
   if (languageErr) return null
+
 
   const inputStyle: CSSProperties = {
     border: "1px solid black",
@@ -55,6 +56,9 @@ const page = () => {
       }).catch((err) => toast.error(err?.message))
   }
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <>
       <Toaster />
