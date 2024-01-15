@@ -31,6 +31,7 @@ export type UnpopulatedBook = {
 const useBooks = () => {
   const [books, setBooks] = useState<UnpopulatedBook[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [doRefetch, setDoRefetch] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
 
   useEffect(() => {
@@ -48,9 +49,9 @@ const useBooks = () => {
       })
 
     return () => controller.abort()
-  }, [])
+  }, [doRefetch])
 
-  return { books, setBooks, isLoading, error }
+  return { books, setBooks, setDoRefetch, isLoading, error }
 }
 
 export default useBooks

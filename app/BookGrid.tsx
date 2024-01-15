@@ -10,7 +10,7 @@ type Props = {
 }
 
 const BookGrid = ({ selectedGenre }: Props) => {
-  const { books, setBooks, isLoading, error } = useBooks()
+  const { books, setBooks, setDoRefetch, isLoading, error } = useBooks()
 
   const filteredBooks = selectedGenre
     ? books.filter((book) => book.category === selectedGenre)
@@ -18,7 +18,7 @@ const BookGrid = ({ selectedGenre }: Props) => {
 
   return (
     <div className="flex flex-col w-full">
-      <SearchInput books={books} setBooks={setBooks} />
+      <SearchInput books={books} setBooks={setBooks} setDoRefetch={setDoRefetch} />
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-600 text-center">{error}</p>}
       {filteredBooks.length === 0 && <Text size='6' className="w-full">0 Books Found!</Text>}
