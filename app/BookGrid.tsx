@@ -3,16 +3,22 @@
 import useBooks from "./hooks/useBooks";
 import BookCard from "./BookCard";
 import { Text } from "@radix-ui/themes";
+import SearchInput from "./SearchInput";
 
-const BookGrid = ({ selectedGenre }: { selectedGenre: string | null }) => {
-  const { books, isLoading, error } = useBooks()
+type Props = {
+  selectedGenre: string | null,
+}
+
+const BookGrid = ({ selectedGenre }: Props) => {
+  const { books, setBooks, isLoading, error } = useBooks()
 
   const filteredBooks = selectedGenre
     ? books.filter((book) => book.category === selectedGenre)
     : books;
 
   return (
-    <>
+    <div className="flex flex-col w-full">
+      <SearchInput books={books} setBooks={setBooks} />
       {isLoading && <p>Loading...</p>}
       {error && <p className="text-red-600 text-center">{error}</p>}
       {filteredBooks.length === 0 && <Text size='6' className="w-full">0 Books Found!</Text>}
@@ -29,7 +35,7 @@ const BookGrid = ({ selectedGenre }: { selectedGenre: string | null }) => {
           ))
         }
       </div>
-    </>
+    </div>
   )
 }
 
