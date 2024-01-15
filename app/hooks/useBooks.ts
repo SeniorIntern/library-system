@@ -18,8 +18,7 @@ export type Book = {
   }
 }
 
-
-type UnpopulatedBook = {
+export type UnpopulatedBook = {
   _id: string,
   title: string,
   description: string,
@@ -51,7 +50,7 @@ const useBooks = () => {
     return () => controller.abort()
   }, [])
 
-  return { books, isLoading, error }
+  return { books, setBooks, isLoading, error }
 }
 
 export default useBooks
